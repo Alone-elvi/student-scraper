@@ -1,21 +1,33 @@
 from api.deskofcards import init_game, draw_cards
+from collections import Counter
 
 CARD_VALUE = ("2", "3", "4", "5", "6", "7", "8", "9", "0", "J", "Q", "K", "A")
 CARD_SUIT = ("S", "H", "D", "C")
 
 
 def is_pared(cards):
-    values = [x.get("code")[0] for x in cards]
-    suites = [x.get("code")[1] for x in cards]
+    values = sorted(
+        list(
+            map(lambda x: x.replace("0", "10"), [x.get("code")[0] for x in cards])
+        )
+    )
+    suites = sorted([x.get("code")[1] for x in cards])
 
-    print([suites.count(suit) for suit in CARD_SUIT])
-    print([values.count(value) for value in CARD_VALUE])
+    # values = ['2', '2', '2', '5', '0']
 
-    if 2 in [suites.count(suit) for suit in CARD_SUIT] or 2 in [
-        values.count(value) for value in CARD_VALUE
-    ]:
-        return True
-    return False
+    result = {"PARED": [], "THREE": []}
+
+    pared = []
+
+    for i in enumerate(Counter(values)):
+        if Counter(values)[i[1]] == 2:
+            result["PARED"].append(i[1])
+        if Counter(values)[i[1]] == 3:
+            result["THREE"].append(i[1])
+    if pared:
+        return pared
+    return None
+
 
 def is_three():
     pass
@@ -42,5 +54,5 @@ if __name__ == "__main__":
     remaining = second_hand["remaining"]
 
     if is_pared(one_hand["cards"]):
-        print("PARED")
-    print(one_hand, second_hand)
+        print(is_pared(one_hand["cards"]))
+    # print(one_hand, second_hand)
