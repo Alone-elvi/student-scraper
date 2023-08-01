@@ -19,7 +19,7 @@ def init_game() -> str:
 
 def draw_cards(desk_id, cards=None) -> dict:
     if cards is not None:
-        cards = requests.get(MAIN_URL + desk_id + "/draw/?count=" + str(len(cards)))
+        cards = requests.get(MAIN_URL + desk_id + "/draw/?count=" + cards)
     else:
         cards = requests.get(MAIN_URL + desk_id + "/draw/?count=5")
 
