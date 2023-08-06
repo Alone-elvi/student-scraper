@@ -111,7 +111,10 @@ def counting_cards(counter_values: list, result: dict) -> dict:
                 result["THREE"] = []
             result["THREE"].append(i[1])  # Three
         if counter_values[i[1]] == 4:
-            result["FOUR"].append(i[1])  # Four
+            if "FOUR" not in result:
+                result["FOUR"] = []
+            result["FOUR"].append(i[1])  # 
+            
 
     return result
 
@@ -311,7 +314,7 @@ if __name__ == "__main__":
     player = hand
 
 
-    remaining = True
+    remaining = 52
 
     while remaining:
         if enough.lower() == "y":
