@@ -256,6 +256,18 @@ def hands_ranking(cards):
 
 
 def api_get_cards(hand: int, turn: bool, desk_id: str, move_hand: dict) -> dict:
+    """
+    Retrieves the cards for a player in a card game.
+
+    Args:
+        hand (int): The player's hand number.
+        turn (bool): Indicates if it is the player's turn.
+        desk_id (str): The ID of the desk.
+        move_hand (dict): The current state of the player's hand.
+
+    Returns:
+        dict: The updated state of the player's hand after making any changes.
+    """
     want_change = str()
 
     if not turn:
@@ -298,7 +310,7 @@ if __name__ == "__main__":
     hand = 0
     player = hand
 
-    # print_hands_ranking(move_hand, hand)
+
     remaining = True
 
     while remaining:
@@ -311,18 +323,11 @@ if __name__ == "__main__":
                 hand=hand, turn=False, desk_id=desk_id, move_hand=move_hand
             )
 
-        # print_hands_ranking(move_hand, hand)
-        # move_hand["cards"] = player_hand["cards"]
         remaining = move_hand["remaining"]
         player_hand = move_hand
         print_hands_ranking(move_hand, hand)
 
-        # hands_rank = hands_ranking(move_hand["cards"])
 
-        # if hands_rank:
-        #     print_cards(move_hand["cards"], hands_rank["COMBINATIONS"], hand)
-        # else:
-        #     print_cards(move_hand["cards"], "NONE", hand)
 
         move_hand["score"] = counting_score(move_hand["cards"])
 
@@ -335,21 +340,5 @@ if __name__ == "__main__":
 
         if enough.lower() == "y":
             hand = 1 if hand == 0 else 2
-            # player = hand
-
-        #     move_hand = api_get_cards(hand, desk_id)
-
-        # hands_rank = hands_ranking(move_hand["cards"])
-
-        # print_hands_ranking(move_hand, hand)
-
-        # if hands_rank:
-        #     print_cards(move_hand["cards"], hands_rank["COMBINATIONS"], hand)
-        # else:
-        #     print_cards(move_hand["cards"], "NONE", hand)
-
-        # print("Player: ", hand, counting_score(move_hand["cards"]))
 
         remaining = move_hand["remaining"]
-    # print(one_hand, second_hand)
-# @TODO Сделать, чтобы после смены карт, менялся участник
