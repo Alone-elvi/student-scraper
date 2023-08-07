@@ -113,8 +113,7 @@ def counting_cards(counter_values: list, result: dict) -> dict:
         if counter_values[i[1]] == 4:
             if "FOUR" not in result:
                 result["FOUR"] = []
-            result["FOUR"].append(i[1])  # 
-            
+            result["FOUR"].append(i[1])  #
 
     return result
 
@@ -150,6 +149,8 @@ def counting_result(result: dict, values: list, suites: list) -> dict:
     returns None.
     """
     if result:
+        if "COMBINATIONS" not in result:
+            result["COMBINATIONS"] = "NONE"
         if "PAIR" in result:
             if len(result["PAIR"]) == 2:
                 result["TWO_PAIR"] = result["PAIR"]
@@ -272,34 +273,34 @@ def api_get_cards(hand: int, turn: bool, desk_id: str, move_hand: dict) -> dict:
         dict: The updated state of the player's hand after making any changes.
     """
     want_change = str()
-
+    # if not move_hand:
+    #     move_hand = draw_cards(desk_id)
     if not turn:
+        print_hands_ranking(move_hand, hand)
         want_change = input("How many cards do you want to change? ")
+        player_hand = draw_cards(desk_id, want_change)
     elif want_change.isdigit():
         move_hand = draw_cards(desk_id, want_change)
     else:
         move_hand = draw_cards(desk_id)
         print_hands_ranking(move_hand, hand)
         want_change = input("How many cards do you want to change? ")
-
-    player_hand = move_hand
+        player_hand = draw_cards(desk_id, want_change)
 
     if want_change.isdigit():
         changeing_card = []
         for card in range(int(want_change)):
             changeing_card.append(
-                player_hand["cards"][
-                    int(input("Which card do you want to change? ")) - 1
-                ]
+                move_hand["cards"][int(input("Which card do you want to change? ")) - 1]
             )
 
-        for changed_card in move_hand["cards"]:
-            for id, card in enumerate(player_hand["cards"]):
+        for changed_card in player_hand["cards"]:
+            for id, card in enumerate(move_hand["cards"]):
                 if card["code"] in [chaned["code"] for chaned in changeing_card]:
-                    player_hand["cards"][id] = changed_card
+                    move_hand["cards"][id] = changed_card
                     break
 
-    return player_hand
+    return move_hand
 
 
 if __name__ == "__main__":
@@ -312,7 +313,6 @@ if __name__ == "__main__":
 
     hand = 0
     player = hand
-
 
     remaining = 52
 
@@ -327,10 +327,8 @@ if __name__ == "__main__":
             )
 
         remaining = move_hand["remaining"]
-        player_hand = move_hand
+
         print_hands_ranking(move_hand, hand)
-
-
 
         move_hand["score"] = counting_score(move_hand["cards"])
 

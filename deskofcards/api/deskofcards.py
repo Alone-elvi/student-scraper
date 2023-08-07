@@ -23,6 +23,9 @@ def draw_cards(desk_id, cards=None) -> dict:
     else:
         cards = requests.get(MAIN_URL + desk_id + "/draw/?count=5")
 
+    if cards.status_code != 200:
+        print(cards.status_code, "ServerError")
+        exit()
     return json.loads(cards.content.decode("utf-8"))
 
 
