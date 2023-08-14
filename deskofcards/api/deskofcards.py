@@ -27,9 +27,3 @@ def draw_cards(desk_id, cards=None) -> dict:
         print(cards.status_code, "ServerError")
         exit()
     return json.loads(cards.content.decode("utf-8"))
-
-
-if __name__ == "__main__":
-    desk_id = init_game()
-    if desk_id:
-        cards = draw_cards(desk_id)
